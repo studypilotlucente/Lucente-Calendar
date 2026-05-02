@@ -2,27 +2,27 @@ let events = JSON.parse(localStorage.getItem("events")) || [];
 let family = JSON.parse(localStorage.getItem("family")) || [];
 let messages = JSON.parse(localStorage.getItem("messages")) || [];
 
-function showPage(pageId) {
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active-page");
-  });
-
-  document.querySelectorAll(".sidebar button").forEach(btn => {
-    btn.classList.remove("active");
-  });
-
-  document.getElementById(pageId).classList.add("active-page");
-  event.target.classList.add("active");
-}
-
 function saveData() {
   localStorage.setItem("events", JSON.stringify(events));
   localStorage.setItem("family", JSON.stringify(family));
   localStorage.setItem("messages", JSON.stringify(messages));
 }
 
+function showPage(pageId, button) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active-page");
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  document.getElementById(pageId).classList.add("active-page");
+  button.classList.add("active");
+}
+
 function addEvent() {
-  const title = document.getElementById("eventTitle").value;
+  const title = document.getElementById("eventTitle").value.trim();
   const date = document.getElementById("eventDate").value;
   const time = document.getElementById("eventTime").value;
 
@@ -33,9 +33,9 @@ function addEvent() {
 
   events.push({
     id: Date.now(),
-    title,
-    date,
-    time
+    title: title,
+    date: date,
+    time: time
   });
 
   saveData();
@@ -60,8 +60,8 @@ function renderEvents() {
   todayList.innerHTML = "";
 
   if (events.length === 0) {
-    eventList.innerHTML = "<p>No events yet. Add your first event from the dashboard.</p>";
-    todayList.innerHTML = "<li>No plans yet</li>";
+    eventList.innerHTML = "<p>No events yet. Add one from the dashboard.</p>";
+    todayList.innerHTML = "<li>No upcoming events</li>";
     return;
   }
 
@@ -77,7 +77,7 @@ function renderEvents() {
     `;
   });
 
-  events.slice(0, 4).forEach(event => {
+  events.slice(0, 5).forEach(event => {
     todayList.innerHTML += `
       <li>${event.title} — ${event.date} at ${event.time}</li>
     `;
@@ -85,7 +85,7 @@ function renderEvents() {
 }
 
 function addFamily() {
-  const name = document.getElementById("familyName").value;
+  const name = document.getElementById("familyName").value.trim();
 
   if (!name) {
     alert("Please enter a name.");
@@ -115,12 +115,12 @@ function renderFamily() {
 
 function sendMessage() {
   const input = document.getElementById("chatMessage");
-  const text = input.value;
+  const text = input.value.trim();
 
   if (!text) return;
 
   messages.push({
-    text,
+    text: text,
     time: new Date().toLocaleTimeString()
   });
 
@@ -133,6 +133,11 @@ function sendMessage() {
 function renderMessages() {
   const messageBox = document.getElementById("messages");
   messageBox.innerHTML = "";
+
+  if (messages.length === 0) {
+    messageBox.innerHTML = "<p>No messages yet.</p>";
+    return;
+  }
 
   messages.forEach(message => {
     messageBox.innerHTML += `

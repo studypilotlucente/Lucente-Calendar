@@ -4,59 +4,61 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Search Console Verification -->
   <meta name="google-site-verification" content="HNCdgm31ssvA4WBS6L759a7R0ITaOOqglFpAqv-i3Z0" />
 
-  <title>SharePlan Calendar</title>
+  <title>Lucente Calendar</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <div class="app">
     <aside class="sidebar">
-      <h1>SharePlan</h1>
-      <p>Smart shared calendar</p>
+      <div>
+        <h1>Lucente</h1>
+        <p>Shared calendar app</p>
+      </div>
 
       <nav>
-        <button onclick="showPage('dashboard')" class="active">Dashboard</button>
-        <button onclick="showPage('calendar')">Calendar</button>
-        <button onclick="showPage('family')">Family</button>
-        <button onclick="showPage('community')">Community</button>
+        <button class="nav-btn active" onclick="showPage('dashboard', this)">Dashboard</button>
+        <button class="nav-btn" onclick="showPage('calendar', this)">Calendar</button>
+        <button class="nav-btn" onclick="showPage('family', this)">Family</button>
+        <button class="nav-btn" onclick="showPage('community', this)">Community</button>
       </nav>
     </aside>
 
     <main class="main">
       <section id="dashboard" class="page active-page">
         <h2>Welcome back</h2>
-        <p class="subtext">Keep track of your schedule, tasks, family plans and community events.</p>
+        <p class="subtext">Track your plans, family schedules and community messages in one place.</p>
 
-        <div class="cards">
+        <div class="grid">
           <div class="card">
-            <h3>Today’s Plans</h3>
-            <ul id="todayList"></ul>
-          </div>
-
-          <div class="card">
-            <h3>Quick Add</h3>
-            <input id="eventTitle" placeholder="Event title" />
+            <h3>Add New Event</h3>
+            <input id="eventTitle" type="text" placeholder="Event name" />
             <input id="eventDate" type="date" />
             <input id="eventTime" type="time" />
             <button onclick="addEvent()">Add Event</button>
+          </div>
+
+          <div class="card">
+            <h3>Upcoming Events</h3>
+            <ul id="todayList"></ul>
           </div>
         </div>
       </section>
 
       <section id="calendar" class="page">
         <h2>My Calendar</h2>
+        <p class="subtext">View and manage your saved schedule.</p>
         <div id="eventList" class="event-list"></div>
       </section>
 
       <section id="family" class="page">
-        <h2>Family Shared Calendar</h2>
-        <p class="subtext">Share your schedule with family members and stay organised together.</p>
+        <h2>Family Sharing</h2>
+        <p class="subtext">Add family members you want to share your calendar with.</p>
 
         <div class="card">
-          <h3>Family Members</h3>
-          <input id="familyName" placeholder="Add family member name" />
+          <input id="familyName" type="text" placeholder="Family member name" />
           <button onclick="addFamily()">Add Member</button>
           <ul id="familyList"></ul>
         </div>
@@ -64,13 +66,13 @@
 
       <section id="community" class="page">
         <h2>Community Chat</h2>
-        <p class="subtext">Talk with friends, classmates or family about upcoming plans.</p>
+        <p class="subtext">Talk about schedules, reminders and events.</p>
 
         <div class="chat-box">
           <div id="messages" class="messages"></div>
 
           <div class="chat-input">
-            <input id="chatMessage" placeholder="Type a message..." />
+            <input id="chatMessage" type="text" placeholder="Write a message..." />
             <button onclick="sendMessage()">Send</button>
           </div>
         </div>
