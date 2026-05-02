@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SharePlan Calendar</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1>SharePlan</h1>
+      <p>Smart shared calendar</p>
+
+      <nav>
+        <button onclick="showPage('dashboard')" class="active">Dashboard</button>
+        <button onclick="showPage('calendar')">Calendar</button>
+        <button onclick="showPage('family')">Family</button>
+        <button onclick="showPage('community')">Community</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section id="dashboard" class="page active-page">
+        <h2>Welcome back</h2>
+        <p class="subtext">Keep track of your schedule, tasks, family plans and community events.</p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Today’s Plans</h3>
+            <ul id="todayList"></ul>
+          </div>
+
+          <div class="card">
+            <h3>Quick Add</h3>
+            <input id="eventTitle" placeholder="Event title" />
+            <input id="eventDate" type="date" />
+            <input id="eventTime" type="time" />
+            <button onclick="addEvent()">Add Event</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="calendar" class="page">
+        <h2>My Calendar</h2>
+        <div id="eventList" class="event-list"></div>
+      </section>
+
+      <section id="family" class="page">
+        <h2>Family Shared Calendar</h2>
+        <p class="subtext">Share your schedule with family members and stay organised together.</p>
+
+        <div class="card">
+          <h3>Family Members</h3>
+          <input id="familyName" placeholder="Add family member name" />
+          <button onclick="addFamily()">Add Member</button>
+          <ul id="familyList"></ul>
+        </div>
+      </section>
+
+      <section id="community" class="page">
+        <h2>Community Chat</h2>
+        <p class="subtext">Talk with friends, classmates or family about upcoming plans.</p>
+
+        <div class="chat-box">
+          <div id="messages" class="messages"></div>
+
+          <div class="chat-input">
+            <input id="chatMessage" placeholder="Type a message..." />
+            <button onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
