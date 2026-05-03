@@ -3,115 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Google Search Console Verification -->
-  <meta name="google-site-verification" content="HNCdgm31ssvA4WBS6L759a7R0ITaOOqglFpAqv-i3Z0" />
-
-  <!-- SEO -->
-  <title>Lucente Calendar | Shared Family Calendar App</title>
-  <meta name="description" content="Lucente Calendar is a modern shared family calendar app for schedules, reminders, events, family planning and community chat." />
-  <meta name="keywords" content="Lucente, Lucente Calendar, shared calendar app, family calendar, online calendar, schedule planner, reminders, community calendar, planning app" />
-  <meta name="author" content="Lucente Calendar" />
-  <meta name="robots" content="index, follow" />
-
-  <!-- Social Preview -->
-  <meta property="og:title" content="Lucente Calendar | Shared Family Calendar App" />
-  <meta property="og:description" content="A modern shared calendar app for family schedules, reminders, events and community planning." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://lucente-calendar.vercel.app/" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Lucente Calendar | Shared Family Calendar App" />
-  <meta name="twitter:description" content="A modern shared calendar app for family schedules, reminders, events and community planning." />
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://lucente-calendar.vercel.app/" />
-
-  <link rel="stylesheet" href="styles.css" />
+  <title>Lucente Calendar | Shared Social Calendar App</title>
+  <meta name="description" content="Lucente Calendar is a modern shared calendar app for events, friends, family schedules and planning." />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <div class="app">
-    <aside class="sidebar">
+  <main class="landing">
+    <nav class="top-nav">
+      <h1>Lucente Calendar</h1>
       <div>
-        <h1>Lucente Calendar</h1>
-        <p>Shared calendar app</p>
+        <button onclick="showAuth('signin')" class="nav-link">Sign In</button>
+        <button onclick="showAuth('signup')" class="nav-cta">Get Started</button>
       </div>
+    </nav>
 
-      <nav aria-label="Main navigation">
-        <button class="nav-btn active" onclick="showPage('dashboard', this)">Dashboard</button>
-        <button class="nav-btn" onclick="showPage('calendar', this)">Calendar</button>
-        <button class="nav-btn" onclick="showPage('family', this)">Family</button>
-        <button class="nav-btn" onclick="showPage('community', this)">Community</button>
-      </nav>
-    </aside>
-
-    <main class="main">
-      <section id="dashboard" class="page active-page">
-        <h2>Lucente Calendar</h2>
-        <p class="subtext">
-          Lucente Calendar is a modern shared family calendar app that helps people manage schedules,
-          reminders, events, family planning and community conversations in one easy place.
+    <section class="hero">
+      <div class="hero-text">
+        <span class="badge">Plan together. Stay connected.</span>
+        <h2>Your calendar, friends and family plans in one beautiful app.</h2>
+        <p>
+          Lucente Calendar helps you organise events, share schedules, add friends,
+          and stay connected through a modern social calendar experience.
         </p>
 
-        <div class="grid">
-          <div class="card">
-            <h3>Add New Event</h3>
-            <input id="eventTitle" type="text" placeholder="Event name" />
-            <input id="eventDate" type="date" />
-            <input id="eventTime" type="time" />
-            <button onclick="addEvent()">Add Event</button>
-          </div>
-
-          <div class="card">
-            <h3>Upcoming Events</h3>
-            <ul id="todayList"></ul>
-          </div>
+        <div class="hero-buttons">
+          <button onclick="showAuth('signup')" class="primary-btn">Get Started</button>
+          <button onclick="showAuth('signin')" class="secondary-btn">Sign In</button>
         </div>
+      </div>
 
-        <section class="card" style="margin-top: 20px;">
-          <h3>About Lucente Calendar</h3>
-          <p>
-            Lucente Calendar is designed for people who want a simple, sleek and shared way to stay organised.
-            Users can track their personal schedule, add important events, share plans with family members and
-            use community chat features to talk about upcoming plans.
-          </p>
-        </section>
-      </section>
-
-      <section id="calendar" class="page">
-        <h2>My Calendar</h2>
-        <p class="subtext">View and manage your saved schedule with Lucente Calendar.</p>
-        <div id="eventList" class="event-list"></div>
-      </section>
-
-      <section id="family" class="page">
-        <h2>Family Sharing</h2>
-        <p class="subtext">Add family members and organise shared plans together using Lucente Calendar.</p>
-
-        <div class="card">
-          <input id="familyName" type="text" placeholder="Family member name" />
-          <button onclick="addFamily()">Add Member</button>
-          <ul id="familyList"></ul>
+      <div class="hero-image">
+        <div class="mock-card big">
+          <h3>Today</h3>
+          <p>Team study session</p>
+          <p>Family dinner</p>
+          <p>Gym with Sarah</p>
         </div>
-      </section>
-
-      <section id="community" class="page">
-        <h2>Community Chat</h2>
-        <p class="subtext">Talk about schedules, reminders and events with your community.</p>
-
-        <div class="chat-box">
-          <div id="messages" class="messages"></div>
-
-          <div class="chat-input">
-            <input id="chatMessage" type="text" placeholder="Write a message..." />
-            <button onclick="sendMessage()">Send</button>
-          </div>
+        <div class="mock-card small">
+          <h3>Friends</h3>
+          <p>+ Add Alex</p>
+          <p>+ Add Mia</p>
         </div>
-      </section>
-    </main>
-  </div>
+      </div>
+    </section>
 
-  <script src="script.js"></script>
+    <section class="features">
+      <div class="feature-card">📅 Shared calendars</div>
+      <div class="feature-card">👥 Add friends</div>
+      <div class="feature-card">🔔 Track events</div>
+      <div class="feature-card">💬 Social planning</div>
+    </section>
+
+    <section id="authBox" class="auth-box hidden">
+      <h2 id="authTitle">Sign In</h2>
+
+      <input id="nameInput" type="text" placeholder="Name / username" class="signup-only" />
+      <input id="emailInput" type="email" placeholder="Email" />
+      <input id="passwordInput" type="password" placeholder="Password" />
+
+      <button id="emailAuthBtn" class="primary-btn">Continue</button>
+      <button onclick="googleLogin()" class="google-btn">Continue with Google</button>
+
+      <p id="switchAuthText"></p>
+    </section>
+  </main>
+
+  <script type="module" src="auth.js"></script>
 </body>
 </html>

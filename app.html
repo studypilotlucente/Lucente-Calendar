@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucente Calendar App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <h1>Lucente</h1>
+      <p>Social calendar</p>
+
+      <nav>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#friends">Friends</a>
+        <a href="#events">Events</a>
+      </nav>
+
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </aside>
+
+    <main class="dashboard">
+      <section class="profile-card">
+        <div>
+          <h2 id="userName">Loading...</h2>
+          <p id="userEmail"></p>
+        </div>
+        <img id="userPhoto" src="https://via.placeholder.com/80" alt="User profile" />
+      </section>
+
+      <section class="dash-grid">
+        <div class="panel">
+          <h2>Add Event</h2>
+          <input id="eventTitle" placeholder="Event title" />
+          <input id="eventDate" type="date" />
+          <input id="eventTime" type="time" />
+          <button onclick="addEvent()" class="primary-btn">Add Event</button>
+        </div>
+
+        <div class="panel">
+          <h2>Upcoming Events</h2>
+          <div id="eventList"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Find Friends</h2>
+          <input id="friendSearch" placeholder="Search email or username" />
+          <button onclick="searchFriend()" class="primary-btn">Search</button>
+          <div id="searchResult"></div>
+        </div>
+
+        <div class="panel">
+          <h2>My Friends</h2>
+          <div id="friendsList"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
