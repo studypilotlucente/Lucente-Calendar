@@ -10,12 +10,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "PASTE-YOUR-API-KEY",
-  authDomain: "PASTE-YOUR-AUTH-DOMAIN",
-  projectId: "PASTE-YOUR-PROJECT-ID",
-  storageBucket: "PASTE-YOUR-STORAGE-BUCKET",
-  messagingSenderId: "PASTE-YOUR-MESSAGING-SENDER-ID",
-  appId: "PASTE-YOUR-APP-ID"
+  apiKey: "AIzaSyBbqObVk7L1tEttPNL7iJEuQcjJtA-Xzhg",
+  authDomain: "lucente-calendar-fdb10.firebaseapp.com",
+  projectId: "lucente-calendar-fdb10",
+  storageBucket: "lucente-calendar-fdb10.firebasestorage.app",
+  messagingSenderId: "443438868901",
+  appId: "1:443438868901:web:ebb0cc14af638e578a604c",
+  measurementId: "G-H5VSF3232W"
 };
 
 const app = initializeApp(firebaseConfig);
