@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lucente Calendar | Shared Social Calendar App</title>
-  <meta name="description" content="Lucente Calendar is a modern shared calendar app for events, friends, family schedules and planning." />
+
+  <!-- Google Fonts (THIS is what we added) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
+  <title>Lucente Calendar | Shared Social Calendar</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <main class="landing">
     <nav class="top-nav">
@@ -19,52 +23,28 @@
 
     <section class="hero">
       <div class="hero-text">
-        <span class="badge">Plan together. Stay connected.</span>
-        <h2>Your calendar, friends and family plans in one beautiful app.</h2>
+        <h2>Your calendar, friends and plans in one place.</h2>
         <p>
-          Lucente Calendar helps you organise events, share schedules, add friends,
-          and stay connected through a modern social calendar experience.
+          Lucente Calendar helps you organise events, add friends,
+          and plan together in a modern way.
         </p>
 
-        <div class="hero-buttons">
-          <button onclick="showAuth('signup')" class="primary-btn">Get Started</button>
-          <button onclick="showAuth('signin')" class="secondary-btn">Sign In</button>
-        </div>
+        <button onclick="showAuth('signup')" class="primary-btn">Get Started</button>
+        <button onclick="showAuth('signin')" class="secondary-btn">Sign In</button>
       </div>
 
-      <div class="hero-image">
-        <div class="mock-card big">
-          <h3>Today</h3>
-          <p>Team study session</p>
-          <p>Family dinner</p>
-          <p>Gym with Sarah</p>
-        </div>
-        <div class="mock-card small">
-          <h3>Friends</h3>
-          <p>+ Add Alex</p>
-          <p>+ Add Mia</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="features">
-      <div class="feature-card">📅 Shared calendars</div>
-      <div class="feature-card">👥 Add friends</div>
-      <div class="feature-card">🔔 Track events</div>
-      <div class="feature-card">💬 Social planning</div>
+      <div class="hero-image"></div>
     </section>
 
     <section id="authBox" class="auth-box hidden">
       <h2 id="authTitle">Sign In</h2>
 
-      <input id="nameInput" type="text" placeholder="Name / username" class="signup-only" />
+      <input id="nameInput" type="text" placeholder="Name" class="signup-only" />
       <input id="emailInput" type="email" placeholder="Email" />
       <input id="passwordInput" type="password" placeholder="Password" />
 
       <button id="emailAuthBtn" class="primary-btn">Continue</button>
       <button onclick="googleLogin()" class="google-btn">Continue with Google</button>
-
-      <p id="switchAuthText"></p>
     </section>
   </main>
 

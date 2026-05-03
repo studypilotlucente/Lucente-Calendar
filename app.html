@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Fonts (THIS is what we added) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+
   <title>Lucente Calendar App</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="app-layout">
     <aside class="sidebar">
@@ -13,9 +18,9 @@
       <p>Social calendar</p>
 
       <nav>
-        <a href="#dashboard">Dashboard</a>
-        <a href="#friends">Friends</a>
-        <a href="#events">Events</a>
+        <a href="#">Dashboard</a>
+        <a href="#">Friends</a>
+        <a href="#">Events</a>
       </nav>
 
       <button onclick="logout()" class="logout-btn">Logout</button>
@@ -27,7 +32,7 @@
           <h2 id="userName">Loading...</h2>
           <p id="userEmail"></p>
         </div>
-        <img id="userPhoto" src="https://via.placeholder.com/80" alt="User profile" />
+        <img id="userPhoto" src="https://via.placeholder.com/80" />
       </section>
 
       <section class="dash-grid">
@@ -40,19 +45,19 @@
         </div>
 
         <div class="panel">
-          <h2>Upcoming Events</h2>
+          <h2>Events</h2>
           <div id="eventList"></div>
         </div>
 
         <div class="panel">
           <h2>Find Friends</h2>
-          <input id="friendSearch" placeholder="Search email or username" />
+          <input id="friendSearch" placeholder="Search email" />
           <button onclick="searchFriend()" class="primary-btn">Search</button>
           <div id="searchResult"></div>
         </div>
 
         <div class="panel">
-          <h2>My Friends</h2>
+          <h2>Friends</h2>
           <div id="friendsList"></div>
         </div>
       </section>
