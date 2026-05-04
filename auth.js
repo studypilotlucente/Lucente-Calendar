@@ -13,35 +13,59 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-let mode = "signin";
+let mode = new URLSearchParams(window.location.search).get("mode") || "signin";
 
-window.showAuth = function(selectedMode) {
-  mode = selectedMode;
+const nameInput = document.getElementById("nameInput");
+const title = document.getElementById("authTitle");
+const btn = document.getElementById("emailAuthBtn");
+const switchText = document.getElementById("switchAuthText");
 
-  const box = document.getElementById("authBox");
-  const title = document.getElementById("authTitle");
-  const nameInput = document.getElementById("nameInput");
-  const btn = document.getElementById("emailAuthBtn");
-  const switchText = document.getElementById("switchAuthText");
+function cleanUsername(value) {
+  return value.toLowerCase().replace(/\s+/g, "").trim();
+}
 
-  box.classList.remove("hidden");
-
+function setupAuthMode() {
   if (mode === "signup") {
     title.textContent = "Create Account";
     nameInput.style.display = "block";
     btn.textContent = "Create Account";
-    switchText.innerHTML = `Already have an account? <button onclick="showAuth('signin')">Sign in</button>`;
+    switchText.innerHTML = `Already have an account? <button onclick="switchMode('signin')">Sign in</button>`;
   } else {
     title.textContent = "Sign In";
     nameInput.style.display = "none";
     btn.textContent = "Sign In";
-    switchText.innerHTML = `No account yet? <button onclick="showAuth('signup')">Create one</button>`;
+    switchText.innerHTML = `No account yet? <button onclick="switchMode('signup')">Create one</button>`;
   }
+}
+
+window.switchMode = function(newMode) {
+  mode = newMode;
+  setupAuthMode();
 };
 
-document.getElementById("emailAuthBtn").addEventListener("click", async () => {
-  const name = document.getElementById("nameInput").value.trim();
-  const email = document.getElementById("emailInput").value.trim();
+async function createUserProfile(user, nameValue) {
+  const userRef = doc(db, "users", user.uid);
+  const existing = await getDoc(userRef);
+
+  if (existing.exists()) return;
+
+  const name = nameValue || user.displayName || user.email.split("@")[0];
+
+  await setDoc(userRef, {
+    uid: user.uid,
+    name: name,
+    nameLower: name.toLowerCase(),
+    username: cleanUsername(name),
+    email: user.email.toLowerCase(),
+    photo: user.photoURL || "logo.svg",
+    friends: [],
+    createdAt: Date.now()
+  });
+}
+
+btn.addEventListener("click", async () => {
+  const name = nameInput.value.trim();
+  const email = document.getElementById("emailInput").value.trim().toLowerCase();
   const password = document.getElementById("passwordInput").value.trim();
 
   if (!email || !password) {
@@ -52,20 +76,13 @@ document.getElementById("emailAuthBtn").addEventListener("click", async () => {
   try {
     if (mode === "signup") {
       const result = await createUserWithEmailAndPassword(auth, email, password);
-
-      await setDoc(doc(db, "users", result.user.uid), {
-        uid: result.user.uid,
-        name: name || email.split("@")[0],
-        username: (name || email.split("@")[0]).toLowerCase(),
-        email: email,
-        photo: "https://via.placeholder.com/100",
-        friends: []
-      });
-
-      window.location.href = "app.html";
+      await createUserProfile(result.user, name);
+      document.body.classList.add("page-exit");
+      setTimeout(() => window.location.href = "app.html", 250);
     } else {
       await signInWithEmailAndPassword(auth, email, password);
-      window.location.href = "app.html";
+      document.body.classList.add("page-exit");
+      setTimeout(() => window.location.href = "app.html", 250);
     }
   } catch (error) {
     alert(error.message);
@@ -75,30 +92,18 @@ document.getElementById("emailAuthBtn").addEventListener("click", async () => {
 window.googleLogin = async function() {
   try {
     const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        uid: user.uid,
-        name: user.displayName || "Lucente User",
-        username: (user.displayName || "user").toLowerCase().replaceAll(" ", ""),
-        email: user.email,
-        photo: user.photoURL || "https://via.placeholder.com/100",
-        friends: []
-      });
-    }
-
-    window.location.href = "app.html";
+    await createUserProfile(result.user, result.user.displayName);
+    document.body.classList.add("page-exit");
+    setTimeout(() => window.location.href = "app.html", 250);
   } catch (error) {
-    alert(error.message);
+    alert("Google login failed: " + error.message);
   }
 };
 
 onAuthStateChanged(auth, user => {
-  if (user) {
+  if (user && window.location.pathname.includes("auth.html")) {
     window.location.href = "app.html";
   }
 });
+
+setupAuthMode();

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sign In | Lucente Calendar</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="auth-page fade-in">
+    <a href="index.html" class="back-link">← Back home</a>
+
+    <section class="auth-card">
+      <div class="brand center">
+        <img src="logo.svg" alt="Lucente Calendar logo" />
+        <h1>Lucente</h1>
+      </div>
+
+      <h2 id="authTitle">Sign In</h2>
+      <p class="auth-subtitle">Access your events, friends and shared calendar.</p>
+
+      <input id="nameInput" type="text" placeholder="Name / username" />
+      <input id="emailInput" type="email" placeholder="Email" />
+      <input id="passwordInput" type="password" placeholder="Password" />
+
+      <button id="emailAuthBtn" class="primary-btn full-btn">Continue</button>
+      <button onclick="googleLogin()" class="google-btn full-btn">Continue with Google</button>
+
+      <p id="switchAuthText" class="switch-text"></p>
+    </section>
+  </main>
+
+  <script type="module" src="auth.js"></script>
+</body>
+</html>

@@ -4,61 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google Fonts (THIS is what we added) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <title>Dashboard | Lucente Calendar</title>
+  <link rel="icon" href="logo.svg" type="image/svg+xml" />
 
-  <title>Lucente Calendar App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div class="app-layout">
+  <div class="app-layout fade-in">
     <aside class="sidebar">
-      <h1>Lucente</h1>
-      <p>Social calendar</p>
+      <div class="brand">
+        <img src="logo.svg" alt="Lucente logo" />
+        <h1>Lucente</h1>
+      </div>
 
       <nav>
-        <a href="#">Dashboard</a>
-        <a href="#">Friends</a>
-        <a href="#">Events</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#events">Events</a>
+        <a href="#friends">Friends</a>
+        <a href="#reminders">Reminders</a>
       </nav>
 
-      <button onclick="logout()" class="logout-btn">Logout</button>
+      <button onclick="logout()" class="logout-btn">Log out</button>
     </aside>
 
     <main class="dashboard">
-      <section class="profile-card">
+      <section class="profile-card glass">
         <div>
           <h2 id="userName">Loading...</h2>
           <p id="userEmail"></p>
         </div>
-        <img id="userPhoto" src="https://via.placeholder.com/80" />
+        <img id="userPhoto" src="logo.svg" alt="User profile" />
       </section>
 
       <section class="dash-grid">
-        <div class="panel">
+        <div class="panel glass">
           <h2>Add Event</h2>
           <input id="eventTitle" placeholder="Event title" />
           <input id="eventDate" type="date" />
           <input id="eventTime" type="time" />
-          <button onclick="addEvent()" class="primary-btn">Add Event</button>
+          <button onclick="addEvent()" class="primary-btn full-btn">Add Event</button>
         </div>
 
-        <div class="panel">
-          <h2>Events</h2>
+        <div class="panel glass">
+          <h2>Upcoming Events</h2>
           <div id="eventList"></div>
         </div>
 
-        <div class="panel">
+        <div class="panel glass">
           <h2>Find Friends</h2>
-          <input id="friendSearch" placeholder="Search email" />
-          <button onclick="searchFriend()" class="primary-btn">Search</button>
+          <input id="friendSearch" placeholder="Search by email, name or username" />
+          <button onclick="searchFriend()" class="primary-btn full-btn">Search</button>
           <div id="searchResult"></div>
         </div>
 
-        <div class="panel">
-          <h2>Friends</h2>
+        <div class="panel glass">
+          <h2>My Friends</h2>
           <div id="friendsList"></div>
+        </div>
+
+        <div class="panel glass wide">
+          <h2>Quick Features</h2>
+          <div class="quick-grid">
+            <div class="mini-card">🔔 Event reminders</div>
+            <div class="mini-card">👥 Friend search</div>
+            <div class="mini-card">☁️ Cloud saved events</div>
+            <div class="mini-card">✨ Modern dashboard</div>
+          </div>
         </div>
       </section>
     </main>

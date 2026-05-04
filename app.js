@@ -18,17 +18,27 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 let currentUser = null;
+let currentEvents = [];
+let notifiedEvents = new Set();
+
+function normalise(value) {
+  return value.toLowerCase().trim();
+}
 
 onAuthStateChanged(auth, async user => {
   if (!user) {
-    window.location.href = "index.html";
+    window.location.href = "auth.html?mode=signin";
     return;
   }
 
   currentUser = user;
+
   await loadProfile();
   await loadEvents();
   await loadFriends();
+
+  requestNotificationPermission();
+  startEventReminderChecker();
 });
 
 async function loadProfile() {
@@ -39,7 +49,7 @@ async function loadProfile() {
     const data = snap.data();
     document.getElementById("userName").textContent = data.name;
     document.getElementById("userEmail").textContent = data.email;
-    document.getElementById("userPhoto").src = data.photo;
+    document.getElementById("userPhoto").src = data.photo || "logo.svg";
   }
 }
 
@@ -54,10 +64,11 @@ window.addEvent = async function() {
   }
 
   const event = {
-    id: Date.now(),
+    id: String(Date.now()),
     title,
     date,
-    time
+    time,
+    notified: false
   };
 
   const eventRef = doc(db, "events", currentUser.uid);
@@ -88,47 +99,61 @@ async function loadEvents() {
   const eventRef = doc(db, "events", currentUser.uid);
   const snap = await getDoc(eventRef);
 
-  if (!snap.exists() || snap.data().events.length === 0) {
+  if (!snap.exists() || !snap.data().events || snap.data().events.length === 0) {
     eventList.innerHTML = "<p>No events yet.</p>";
+    currentEvents = [];
     return;
   }
 
-  snap.data().events.forEach(event => {
+  currentEvents = snap.data().events.sort((a, b) => {
+    return new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`);
+  });
+
+  currentEvents.forEach(event => {
     eventList.innerHTML += `
-      <div class="mini-card">
-        <strong>${event.title}</strong>
-        <p>${event.date} at ${event.time}</p>
+      <div class="mini-card event-card">
+        <div>
+          <strong>${event.title}</strong>
+          <p>${event.date} at ${event.time}</p>
+        </div>
+        <span>🔔</span>
       </div>
     `;
   });
 }
 
 window.searchFriend = async function() {
-  const searchValue = document.getElementById("friendSearch").value.trim().toLowerCase();
+  const rawSearch = document.getElementById("friendSearch").value.trim();
+  const search = normalise(rawSearch);
+  const searchNoSpaces = search.replace(/\s+/g, "");
   const resultBox = document.getElementById("searchResult");
 
   resultBox.innerHTML = "";
 
-  if (!searchValue) {
-    alert("Type an email or username.");
+  if (!search) {
+    alert("Type an email, name or username.");
     return;
   }
 
   const usersRef = collection(db, "users");
 
-  const emailQuery = query(usersRef, where("email", "==", searchValue));
-  const usernameQuery = query(usersRef, where("username", "==", searchValue));
-
-  const emailResults = await getDocs(emailQuery);
-  const usernameResults = await getDocs(usernameQuery);
+  const queries = [
+    query(usersRef, where("email", "==", search)),
+    query(usersRef, where("username", "==", searchNoSpaces)),
+    query(usersRef, where("nameLower", "==", search))
+  ];
 
   let foundUser = null;
 
-  emailResults.forEach(doc => foundUser = doc.data());
-  usernameResults.forEach(doc => foundUser = doc.data());
+  for (const q of queries) {
+    const results = await getDocs(q);
+    results.forEach(doc => {
+      if (!foundUser) foundUser = doc.data();
+    });
+  }
 
   if (!foundUser) {
-    resultBox.innerHTML = "<p>No user found.</p>";
+    resultBox.innerHTML = "<p>No user found. Check spelling or ask them to sign up first.</p>";
     return;
   }
 
@@ -138,10 +163,13 @@ window.searchFriend = async function() {
   }
 
   resultBox.innerHTML = `
-    <div class="mini-card">
-      <strong>${foundUser.name}</strong>
-      <p>${foundUser.email}</p>
-      <button onclick="addFriend('${foundUser.uid}')">Add Friend</button>
+    <div class="mini-card friend">
+      <img src="${foundUser.photo || "logo.svg"}" alt="${foundUser.name}" />
+      <div>
+        <strong>${foundUser.name}</strong>
+        <p>${foundUser.email}</p>
+        <button onclick="addFriend('${foundUser.uid}')" class="small-btn">Add Friend</button>
+      </div>
     </div>
   `;
 };
@@ -177,7 +205,7 @@ async function loadFriends() {
 
       friendsList.innerHTML += `
         <div class="mini-card friend">
-          <img src="${friend.photo}" alt="${friend.name}" />
+          <img src="${friend.photo || "logo.svg"}" alt="${friend.name}" />
           <div>
             <strong>${friend.name}</strong>
             <p>${friend.email}</p>
@@ -188,7 +216,40 @@ async function loadFriends() {
   }
 }
 
+function requestNotificationPermission() {
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+}
+
+function startEventReminderChecker() {
+  setInterval(() => {
+    const now = new Date();
+
+    currentEvents.forEach(event => {
+      const eventTime = new Date(`${event.date}T${event.time}`);
+      const diff = eventTime - now;
+
+      if (diff <= 0 && diff > -60000 && !notifiedEvents.has(event.id)) {
+        notifiedEvents.add(event.id);
+
+        if ("Notification" in window && Notification.permission === "granted") {
+          new Notification("Lucente Calendar Reminder", {
+            body: `${event.title} is starting now.`,
+            icon: "logo.svg"
+          });
+        } else {
+          alert(`Reminder: ${event.title} is starting now.`);
+        }
+      }
+    });
+  }, 15000);
+}
+
 window.logout = async function() {
-  await signOut(auth);
-  window.location.href = "index.html";
+  document.body.classList.add("page-exit");
+  setTimeout(async () => {
+    await signOut(auth);
+    window.location.href = "index.html";
+  }, 250);
 };
