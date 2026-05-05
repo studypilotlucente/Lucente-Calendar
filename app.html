@@ -20,10 +20,10 @@
       </div>
 
       <nav>
-        <a href="#dashboard">Dashboard</a>
-        <a href="#events">Events</a>
-        <a href="#friends">Friends</a>
-        <a href="#reminders">Reminders</a>
+        <button class="side-link active" onclick="showView('dashboard', this)">Dashboard</button>
+        <button class="side-link" onclick="showView('calendar', this)">Calendar</button>
+        <button class="side-link" onclick="showView('week', this)">Week</button>
+        <button class="side-link" onclick="showView('friends', this)">Friends</button>
       </nav>
 
       <button onclick="logout()" class="logout-btn">Log out</button>
@@ -38,41 +38,108 @@
         <img id="userPhoto" src="logo.svg" alt="User profile" />
       </section>
 
-      <section class="dash-grid">
-        <div class="panel glass">
-          <h2>Add Event</h2>
-          <input id="eventTitle" placeholder="Event title" />
-          <input id="eventDate" type="date" />
-          <input id="eventTime" type="time" />
-          <button onclick="addEvent()" class="primary-btn full-btn">Add Event</button>
+      <section id="dashboardView" class="view active-view">
+        <div class="stats-grid">
+          <div class="stat-card glass">
+            <h3 id="totalEvents">0</h3>
+            <p>Total events</p>
+          </div>
+          <div class="stat-card glass">
+            <h3 id="todayEvents">0</h3>
+            <p>Today</p>
+          </div>
+          <div class="stat-card glass">
+            <h3 id="friendCount">0</h3>
+            <p>Friends</p>
+          </div>
         </div>
 
-        <div class="panel glass">
-          <h2>Upcoming Events</h2>
-          <div id="eventList"></div>
-        </div>
+        <section class="dash-grid">
+          <div class="panel glass">
+            <h2>Add Event</h2>
+            <input id="eventTitle" placeholder="Event title" />
+            <input id="eventDate" type="date" />
+            <input id="eventTime" type="time" />
 
-        <div class="panel glass">
-          <h2>Find Friends</h2>
-          <input id="friendSearch" placeholder="Search by email, name or username" />
-          <button onclick="searchFriend()" class="primary-btn full-btn">Search</button>
-          <div id="searchResult"></div>
-        </div>
+            <select id="eventCategory">
+              <option value="Personal">Personal</option>
+              <option value="School">School</option>
+              <option value="Family">Family</option>
+              <option value="Friends">Friends</option>
+              <option value="Work">Work</option>
+            </select>
 
-        <div class="panel glass">
-          <h2>My Friends</h2>
-          <div id="friendsList"></div>
+            <select id="eventPriority">
+              <option value="Normal">Normal priority</option>
+              <option value="Important">Important</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+
+            <textarea id="eventNotes" placeholder="Notes / details"></textarea>
+
+            <button onclick="addEvent()" class="primary-btn full-btn">Add Event</button>
+          </div>
+
+          <div class="panel glass">
+            <h2>Today</h2>
+            <div id="todayList"></div>
+          </div>
+
+          <div class="panel glass wide">
+            <h2>Upcoming Events</h2>
+            <div id="eventList"></div>
+          </div>
+        </section>
+      </section>
+
+      <section id="calendarView" class="view">
+        <div class="panel glass wide">
+          <div class="calendar-header">
+            <button onclick="changeMonth(-1)" class="small-btn">←</button>
+            <h2 id="monthTitle">Month</h2>
+            <button onclick="changeMonth(1)" class="small-btn">→</button>
+          </div>
+
+          <div class="calendar-days">
+            <strong>Sun</strong>
+            <strong>Mon</strong>
+            <strong>Tue</strong>
+            <strong>Wed</strong>
+            <strong>Thu</strong>
+            <strong>Fri</strong>
+            <strong>Sat</strong>
+          </div>
+
+          <div id="calendarGrid" class="calendar-grid"></div>
         </div>
 
         <div class="panel glass wide">
-          <h2>Quick Features</h2>
-          <div class="quick-grid">
-            <div class="mini-card">🔔 Event reminders</div>
-            <div class="mini-card">👥 Friend search</div>
-            <div class="mini-card">☁️ Cloud saved events</div>
-            <div class="mini-card">✨ Modern dashboard</div>
-          </div>
+          <h2 id="selectedDateTitle">Selected Date</h2>
+          <div id="selectedDateEvents"></div>
         </div>
+      </section>
+
+      <section id="weekView" class="view">
+        <div class="panel glass wide">
+          <h2>This Week</h2>
+          <div id="weekSchedule" class="week-schedule"></div>
+        </div>
+      </section>
+
+      <section id="friendsView" class="view">
+        <section class="dash-grid">
+          <div class="panel glass">
+            <h2>Find Friends</h2>
+            <input id="friendSearch" placeholder="Search by email, name or username" />
+            <button onclick="searchFriend()" class="primary-btn full-btn">Search</button>
+            <div id="searchResult"></div>
+          </div>
+
+          <div class="panel glass">
+            <h2>My Friends</h2>
+            <div id="friendsList"></div>
+          </div>
+        </section>
       </section>
     </main>
   </div>
