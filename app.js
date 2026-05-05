@@ -19,15 +19,10 @@ import {
 
 let currentUser = null;
 let currentEvents = [];
-let currentMonth = new Date();
 let notifiedEvents = new Set();
 
 function normalise(value) {
   return value.toLowerCase().trim();
-}
-
-function todayString() {
-  return new Date().toISOString().split("T")[0];
 }
 
 onAuthStateChanged(auth, async user => {
@@ -46,22 +41,6 @@ onAuthStateChanged(auth, async user => {
   startEventReminderChecker();
 });
 
-window.showView = function(viewName, button) {
-  document.querySelectorAll(".view").forEach(view => {
-    view.classList.remove("active-view");
-  });
-
-  document.querySelectorAll(".side-link").forEach(link => {
-    link.classList.remove("active");
-  });
-
-  document.getElementById(`${viewName}View`).classList.add("active-view");
-
-  if (button) {
-    button.classList.add("active");
-  }
-};
-
 async function loadProfile() {
   const userRef = doc(db, "users", currentUser.uid);
   const snap = await getDoc(userRef);
@@ -78,12 +57,9 @@ window.addEvent = async function() {
   const title = document.getElementById("eventTitle").value.trim();
   const date = document.getElementById("eventDate").value;
   const time = document.getElementById("eventTime").value;
-  const category = document.getElementById("eventCategory").value;
-  const priority = document.getElementById("eventPriority").value;
-  const notes = document.getElementById("eventNotes").value.trim();
 
   if (!title || !date || !time) {
-    alert("Please fill in title, date and time.");
+    alert("Please fill in all event details.");
     return;
   }
 
@@ -92,9 +68,6 @@ window.addEvent = async function() {
     title,
     date,
     time,
-    category,
-    priority,
-    notes,
     notified: false
   };
 
@@ -115,163 +88,95 @@ window.addEvent = async function() {
   document.getElementById("eventTitle").value = "";
   document.getElementById("eventDate").value = "";
   document.getElementById("eventTime").value = "";
-  document.getElementById("eventNotes").value = "";
 
   await loadEvents();
 };
 
 async function loadEvents() {
-  const eventRef = doc(db, "events", currentUser.uid);
-  const snap = await getDoc(eventRef);
-
-  if (!snap.exists() || !snap.data().events) {
-    currentEvents = [];
-  } else {
-    currentEvents = snap.data().events.sort((a, b) => {
-      return new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`);
-    });
-  }
-
-  renderUpcomingEvents();
-  renderToday();
-  renderStats();
-  renderCalendar();
-  renderSelectedDate(todayString());
-  renderWeekSchedule();
-}
-
-function eventCardHTML(event) {
-  return `
-    <div class="mini-card event-card priority-${event.priority}">
-      <div>
-        <strong>${event.title}</strong>
-        <p>${event.date} at ${event.time}</p>
-        <span class="tag">${event.category}</span>
-        <span class="tag">${event.priority}</span>
-        ${event.notes ? `<p class="event-notes">${event.notes}</p>` : ""}
-      </div>
-      <span class="bell">🔔</span>
-    </div>
-  `;
-}
-
-function renderUpcomingEvents() {
   const eventList = document.getElementById("eventList");
   eventList.innerHTML = "";
 
-  if (currentEvents.length === 0) {
+  const eventRef = doc(db, "events", currentUser.uid);
+  const snap = await getDoc(eventRef);
+
+  if (!snap.exists() || !snap.data().events || snap.data().events.length === 0) {
     eventList.innerHTML = "<p>No events yet.</p>";
+    currentEvents = [];
+    renderCalendar();
+    renderWeek();
     return;
   }
 
-  currentEvents.slice(0, 8).forEach(event => {
-    eventList.innerHTML += eventCardHTML(event);
+  currentEvents = snap.data().events.sort((a, b) => {
+    return new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`);
   });
-}
 
-function renderToday() {
-  const todayList = document.getElementById("todayList");
-  todayList.innerHTML = "";
-
-  const todayEvents = currentEvents.filter(event => event.date === todayString());
-
-  if (todayEvents.length === 0) {
-    todayList.innerHTML = "<p>No events today.</p>";
-    return;
-  }
-
-  todayEvents.forEach(event => {
-    todayList.innerHTML += eventCardHTML(event);
+  currentEvents.forEach(event => {
+    eventList.innerHTML += `
+      <div class="mini-card event-card">
+        <div>
+          <strong>${event.title}</strong>
+          <p>${event.date} at ${event.time}</p>
+        </div>
+        <span>🔔</span>
+      </div>
+    `;
   });
-}
 
-function renderStats() {
-  document.getElementById("totalEvents").textContent = currentEvents.length;
-  document.getElementById("todayEvents").textContent =
-    currentEvents.filter(event => event.date === todayString()).length;
-}
-
-window.changeMonth = function(direction) {
-  currentMonth.setMonth(currentMonth.getMonth() + direction);
   renderCalendar();
-};
+  renderWeek();
+}
 
 function renderCalendar() {
-  const calendarGrid = document.getElementById("calendarGrid");
-  const monthTitle = document.getElementById("monthTitle");
+  const grid = document.getElementById("calendarGrid");
+  if (!grid) return;
 
-  calendarGrid.innerHTML = "";
+  grid.innerHTML = "";
 
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const days = new Date(year, month + 1, 0).getDate();
 
-  monthTitle.textContent = currentMonth.toLocaleString("default", {
-    month: "long",
-    year: "numeric"
-  });
+  for (let day = 1; day <= days; day++) {
+    const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const events = currentEvents.filter(event => event.date === date);
 
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-  for (let i = 0; i < firstDay; i++) {
-    calendarGrid.innerHTML += `<div class="calendar-cell empty"></div>`;
-  }
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dateValue = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-    const dayEvents = currentEvents.filter(event => event.date === dateValue);
-
-    calendarGrid.innerHTML += `
-      <button class="calendar-cell ${dateValue === todayString() ? "today-cell" : ""}" onclick="renderSelectedDate('${dateValue}')">
+    grid.innerHTML += `
+      <div class="mini-card">
         <strong>${day}</strong>
-        ${dayEvents.length > 0 ? `<span>${dayEvents.length} event${dayEvents.length > 1 ? "s" : ""}</span>` : ""}
-      </button>
+        ${
+          events.length > 0
+            ? `<p>${events.length} event${events.length > 1 ? "s" : ""}</p>`
+            : `<p>No events</p>`
+        }
+      </div>
     `;
   }
 }
 
-window.renderSelectedDate = function(dateValue) {
-  const selectedDateTitle = document.getElementById("selectedDateTitle");
-  const selectedDateEvents = document.getElementById("selectedDateEvents");
+function renderWeek() {
+  const weekList = document.getElementById("weekList");
+  if (!weekList) return;
 
-  selectedDateTitle.textContent = `Events on ${dateValue}`;
-  selectedDateEvents.innerHTML = "";
+  weekList.innerHTML = "";
 
-  const events = currentEvents.filter(event => event.date === dateValue);
-
-  if (events.length === 0) {
-    selectedDateEvents.innerHTML = "<p>No events on this date.</p>";
-    return;
-  }
-
-  events.forEach(event => {
-    selectedDateEvents.innerHTML += eventCardHTML(event);
-  });
-};
-
-function renderWeekSchedule() {
-  const weekSchedule = document.getElementById("weekSchedule");
-  weekSchedule.innerHTML = "";
-
-  const now = new Date();
-  const start = new Date(now);
-  start.setDate(now.getDate() - now.getDay());
+  const today = new Date();
 
   for (let i = 0; i < 7; i++) {
-    const day = new Date(start);
-    day.setDate(start.getDate() + i);
+    const day = new Date(today);
+    day.setDate(today.getDate() + i);
 
-    const dateValue = day.toISOString().split("T")[0];
-    const dayEvents = currentEvents.filter(event => event.date === dateValue);
+    const date = day.toISOString().split("T")[0];
+    const events = currentEvents.filter(event => event.date === date);
 
-    weekSchedule.innerHTML += `
-      <div class="week-day">
-        <h3>${day.toLocaleDateString("default", { weekday: "long" })}</h3>
-        <p>${dateValue}</p>
+    weekList.innerHTML += `
+      <div class="mini-card">
+        <strong>${day.toDateString()}</strong>
         ${
-          dayEvents.length === 0
-            ? `<div class="mini-card">No events</div>`
-            : dayEvents.map(event => eventCardHTML(event)).join("")
+          events.length === 0
+            ? "<p>No events</p>"
+            : events.map(event => `<p>${event.title} at ${event.time}</p>`).join("")
         }
       </div>
     `;
@@ -350,11 +255,8 @@ async function loadFriends() {
 
   if (!snap.exists() || !snap.data().friends || snap.data().friends.length === 0) {
     friendsList.innerHTML = "<p>No friends added yet.</p>";
-    document.getElementById("friendCount").textContent = "0";
     return;
   }
-
-  document.getElementById("friendCount").textContent = snap.data().friends.length;
 
   for (const friendUid of snap.data().friends) {
     const friendSnap = await getDoc(doc(db, "users", friendUid));
