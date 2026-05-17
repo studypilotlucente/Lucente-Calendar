@@ -73,6 +73,15 @@ a {
   font-weight: 900;
 }
 
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-weight: 900;
+  color: #7c3aed;
+  margin-bottom: 8px;
+}
+
 .landing {
   min-height: 100vh;
   padding: 28px;
@@ -324,6 +333,13 @@ input:focus {
   margin: 10px 0 32px;
 }
 
+.partner-label {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c4b5fd !important;
+  margin-bottom: 24px !important;
+}
+
 .sidebar nav {
   display: flex;
   flex-direction: column;
@@ -346,7 +362,7 @@ input:focus {
 
 .logout-btn {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 16px;
   padding: 14px;
   border-radius: 16px;
   font-weight: 900;
@@ -357,6 +373,22 @@ input:focus {
 }
 
 .logout-btn:hover {
+  transform: translateY(-3px);
+}
+
+.vyntra-side-btn {
+  width: 100%;
+  margin-top: 26px;
+  padding: 14px;
+  border-radius: 16px;
+  font-weight: 900;
+  color: white;
+  background: linear-gradient(135deg, #2563eb, #7c3aed, #06b6d4);
+  box-shadow: 0 16px 30px rgba(37,99,235,0.28);
+  transition: 0.2s;
+}
+
+.vyntra-side-btn:hover {
   transform: translateY(-3px);
 }
 
@@ -387,6 +419,79 @@ input:focus {
   border-radius: 50%;
 }
 
+.vyntra-hero {
+  border-radius: 34px;
+  padding: 28px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.vyntra-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(6,182,212,0.22), transparent 32%),
+    radial-gradient(circle at bottom left, rgba(124,58,237,0.18), transparent 35%);
+  pointer-events: none;
+}
+
+.vyntra-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.vyntra-hero h2 {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+.vyntra-hero p {
+  color: #4b5563;
+  line-height: 1.7;
+  max-width: 740px;
+}
+
+.vyntra-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 220px;
+}
+
+.vyntra-btn,
+.secondary-vyntra-btn,
+.chat-event-btn {
+  border-radius: 16px;
+  font-weight: 900;
+  transition: 0.2s;
+}
+
+.vyntra-btn {
+  padding: 14px 18px;
+  color: white;
+  background: linear-gradient(135deg, #2563eb, #7c3aed, #06b6d4);
+  box-shadow: 0 18px 35px rgba(37,99,235,0.25);
+}
+
+.secondary-vyntra-btn {
+  padding: 14px 18px;
+  color: #111827;
+  background: white;
+  box-shadow: 0 16px 35px rgba(0,0,0,0.08);
+}
+
+.vyntra-btn:hover,
+.secondary-vyntra-btn:hover,
+.chat-event-btn:hover {
+  transform: translateY(-3px);
+}
+
 .dash-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(270px, 1fr));
@@ -413,6 +518,30 @@ input:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 14px;
+}
+
+.event-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-event-btn {
+  padding: 9px 13px;
+  color: white;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+}
+
+.calendar-day,
+.week-day {
+  transition: 0.2s;
+}
+
+.calendar-day:hover,
+.week-day:hover {
+  transform: translateY(-3px);
+  background: white;
 }
 
 .friend {
@@ -440,6 +569,16 @@ input:focus {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
+}
+
+@media (max-width: 1000px) {
+  .vyntra-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .vyntra-actions {
+    min-width: 0;
+  }
 }
 
 @media (max-width: 900px) {
@@ -483,5 +622,16 @@ input:focus {
     position: static;
     width: 100%;
     margin-top: 16px;
+  }
+
+  .profile-card {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .event-card {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

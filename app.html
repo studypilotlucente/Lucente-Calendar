@@ -19,12 +19,19 @@
         <h1>Lucente</h1>
       </div>
 
+      <p class="partner-label">Chat powered by Vyntra Connect</p>
+
       <nav>
         <a href="#dashboard">Dashboard</a>
         <a href="#calendar">Calendar</a>
         <a href="#week">Week</a>
         <a href="#friends">Friends</a>
+        <a href="#vyntra">Vyntra Chat</a>
       </nav>
+
+      <button onclick="openVyntraChat()" class="vyntra-side-btn">
+        Open Vyntra Connect
+      </button>
 
       <button onclick="logout()" class="logout-btn">Log out</button>
     </aside>
@@ -32,10 +39,32 @@
     <main class="dashboard">
       <section class="profile-card glass">
         <div>
+          <p class="eyebrow">Lucente Calendar Dashboard</p>
           <h2 id="userName">Loading...</h2>
           <p id="userEmail"></p>
         </div>
         <img id="userPhoto" src="logo.svg" alt="User profile" />
+      </section>
+
+      <section class="vyntra-hero glass" id="vyntra">
+        <div>
+          <p class="eyebrow">Integrated Partner</p>
+          <h2>Vyntra Connect</h2>
+          <p>
+            Lucente Calendar stays focused on scheduling, while Vyntra Connect powers
+            real-time chat, group conversations, and future event-based messaging.
+          </p>
+        </div>
+
+        <div class="vyntra-actions">
+          <button onclick="openVyntraChat()" class="vyntra-btn">
+            Open Vyntra Chat
+          </button>
+
+          <button onclick="openVyntraEventChat()" class="secondary-vyntra-btn">
+            Open Event Chat
+          </button>
+        </div>
       </section>
 
       <section class="dash-grid">
@@ -82,7 +111,9 @@
             <div class="mini-card">☁️ Cloud saved events</div>
             <div class="mini-card">📅 Monthly calendar</div>
             <div class="mini-card">🗓 Weekly schedule</div>
+            <div class="mini-card">💬 Vyntra chat integration</div>
             <div class="mini-card">✨ Modern dashboard</div>
+            <div class="mini-card">🔗 Lucente ecosystem</div>
           </div>
         </div>
       </section>

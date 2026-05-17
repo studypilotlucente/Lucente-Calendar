@@ -17,6 +17,8 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const VYNTRA_URL = "https://vyntra-connect.vercel.app";
+
 let currentUser = null;
 let currentEvents = [];
 let notifiedEvents = new Set();
@@ -47,11 +49,27 @@ async function loadProfile() {
 
   if (snap.exists()) {
     const data = snap.data();
-    document.getElementById("userName").textContent = data.name;
-    document.getElementById("userEmail").textContent = data.email;
+    document.getElementById("userName").textContent = data.name || currentUser.email;
+    document.getElementById("userEmail").textContent = data.email || currentUser.email;
     document.getElementById("userPhoto").src = data.photo || "logo.svg";
+  } else {
+    document.getElementById("userName").textContent = currentUser.email.split("@")[0];
+    document.getElementById("userEmail").textContent = currentUser.email;
+    document.getElementById("userPhoto").src = "logo.svg";
   }
 }
+
+window.openVyntraChat = function() {
+  const userEmail = currentUser?.email || "";
+  const url = `${VYNTRA_URL}/login.html?source=lucente&email=${encodeURIComponent(userEmail)}`;
+  window.open(url, "_blank");
+};
+
+window.openVyntraEventChat = function(eventTitle = "Lucente Event") {
+  const userEmail = currentUser?.email || "";
+  const url = `${VYNTRA_URL}/login.html?source=lucente&type=event&event=${encodeURIComponent(eventTitle)}&email=${encodeURIComponent(userEmail)}`;
+  window.open(url, "_blank");
+};
 
 window.addEvent = async function() {
   const title = document.getElementById("eventTitle").value.trim();
@@ -115,10 +133,16 @@ async function loadEvents() {
     eventList.innerHTML += `
       <div class="mini-card event-card">
         <div>
-          <strong>${event.title}</strong>
+          <strong>${escapeHTML(event.title)}</strong>
           <p>${event.date} at ${event.time}</p>
         </div>
-        <span>🔔</span>
+
+        <div class="event-actions">
+          <button onclick="openVyntraEventChat('${escapeAttribute(event.title)}')" class="chat-event-btn">
+            Chat
+          </button>
+          <span>🔔</span>
+        </div>
       </div>
     `;
   });
@@ -143,7 +167,7 @@ function renderCalendar() {
     const events = currentEvents.filter(event => event.date === date);
 
     grid.innerHTML += `
-      <div class="mini-card">
+      <div class="mini-card calendar-day">
         <strong>${day}</strong>
         ${
           events.length > 0
@@ -171,12 +195,12 @@ function renderWeek() {
     const events = currentEvents.filter(event => event.date === date);
 
     weekList.innerHTML += `
-      <div class="mini-card">
+      <div class="mini-card week-day">
         <strong>${day.toDateString()}</strong>
         ${
           events.length === 0
             ? "<p>No events</p>"
-            : events.map(event => `<p>${event.title} at ${event.time}</p>`).join("")
+            : events.map(event => `<p>${escapeHTML(event.title)} at ${event.time}</p>`).join("")
         }
       </div>
     `;
@@ -208,8 +232,8 @@ window.searchFriend = async function() {
 
   for (const q of queries) {
     const results = await getDocs(q);
-    results.forEach(doc => {
-      if (!foundUser) foundUser = doc.data();
+    results.forEach(docSnap => {
+      if (!foundUser) foundUser = docSnap.data();
     });
   }
 
@@ -225,10 +249,10 @@ window.searchFriend = async function() {
 
   resultBox.innerHTML = `
     <div class="mini-card friend">
-      <img src="${foundUser.photo || "logo.svg"}" alt="${foundUser.name}" />
+      <img src="${foundUser.photo || "logo.svg"}" alt="${escapeAttribute(foundUser.name)}" />
       <div>
-        <strong>${foundUser.name}</strong>
-        <p>${foundUser.email}</p>
+        <strong>${escapeHTML(foundUser.name)}</strong>
+        <p>${escapeHTML(foundUser.email)}</p>
         <button onclick="addFriend('${foundUser.uid}')" class="small-btn">Add Friend</button>
       </div>
     </div>
@@ -266,10 +290,10 @@ async function loadFriends() {
 
       friendsList.innerHTML += `
         <div class="mini-card friend">
-          <img src="${friend.photo || "logo.svg"}" alt="${friend.name}" />
+          <img src="${friend.photo || "logo.svg"}" alt="${escapeAttribute(friend.name)}" />
           <div>
-            <strong>${friend.name}</strong>
-            <p>${friend.email}</p>
+            <strong>${escapeHTML(friend.name)}</strong>
+            <p>${escapeHTML(friend.email)}</p>
           </div>
         </div>
       `;
@@ -305,6 +329,16 @@ function startEventReminderChecker() {
       }
     });
   }, 15000);
+}
+
+function escapeHTML(text = "") {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function escapeAttribute(text = "") {
+  return String(text).replace(/'/g, "\\'").replace(/"/g, "&quot;");
 }
 
 window.logout = async function() {
