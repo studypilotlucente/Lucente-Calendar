@@ -27,14 +27,18 @@ function cleanUsername(value) {
 function setupAuthMode() {
   if (mode === "signup") {
     title.textContent = "Create Account";
+    document.title = "Create Account | Lucente Calendar";
     nameInput.style.display = "block";
+    nameInput.required = true;
     btn.textContent = "Create Account";
-    switchText.innerHTML = `Already have an account? <button onclick="switchMode('signin')">Sign in</button>`;
+    switchText.innerHTML = `Already have an account? <button type="button" onclick="switchMode('signin')">Sign in</button>`;
   } else {
     title.textContent = "Sign In";
+    document.title = "Sign In | Lucente Calendar";
     nameInput.style.display = "none";
+    nameInput.required = false;
     btn.textContent = "Sign In";
-    switchText.innerHTML = `No account yet? <button onclick="switchMode('signup')">Create one</button>`;
+    switchText.innerHTML = `No account yet? <button type="button" onclick="switchMode('signup')">Create one</button>`;
   }
 }
 
@@ -70,6 +74,11 @@ btn.addEventListener("click", async () => {
 
   if (!email || !password) {
     alert("Please enter email and password.");
+    return;
+  }
+
+  if (mode === "signup" && !name) {
+    alert("Please enter your name to create an account.");
     return;
   }
 
