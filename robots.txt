@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lucente-calendar.vercel.app/sitemap.xml

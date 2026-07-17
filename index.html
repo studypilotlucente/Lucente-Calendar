@@ -3,17 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="index,follow" />
 
-  <title>Lucente Calendar | Shared Social Calendar App</title>
-  <meta name="description" content="Lucente Calendar is a modern shared calendar app for friends, events, reminders and social planning." />
+  <title>Lucente Calendar | Sahaan Kesavan & Farris Zaman</title>
+  <meta name="description" content="Lucente Calendar is a shared calendar application from Lucente Corporate, founded by Sahaan Kesavan and Farris Zaman, for events, reminders and collaborative planning." />
 
   <link rel="icon" href="logo.svg" type="image/svg+xml" />
   <link rel="canonical" href="https://lucente-calendar.vercel.app/" />
 
-  <meta property="og:title" content="Lucente Calendar" />
-  <meta property="og:description" content="A modern shared calendar app for friends, events and planning." />
+  <meta property="og:title" content="Lucente Calendar | Sahaan Kesavan & Farris Zaman" />
+  <meta property="og:description" content="Lucente Calendar is a shared calendar application from Lucente Corporate, founded by Sahaan Kesavan and Farris Zaman, for events, reminders and collaborative planning." />
   <meta property="og:image" content="https://lucente-calendar.vercel.app/logo.svg" />
   <meta property="og:url" content="https://lucente-calendar.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Lucente Calendar" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lucente Calendar | Sahaan Kesavan & Farris Zaman" />
+  <meta name="twitter:description" content="Lucente Calendar is a shared calendar application from Lucente Corporate, founded by Sahaan Kesavan and Farris Zaman, for events, reminders and collaborative planning." />
+  <meta name="twitter:image" content="https://lucente-calendar.vercel.app/logo.svg" />
+  <meta name="twitter:url" content="https://lucente-calendar.vercel.app/" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;900&family=Poppins:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
@@ -21,7 +30,7 @@
 
 <body>
   <main class="landing fade-in">
-    <nav class="top-nav">
+    <nav class="top-nav" aria-label="Primary">
       <div class="brand">
         <img src="logo.svg" alt="Lucente Calendar logo" />
         <h1>Lucente Calendar</h1>
@@ -33,18 +42,30 @@
       </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="hero-text">
         <span class="badge">Plan together. Stay connected.</span>
-        <h2>A social calendar made for real life.</h2>
+        <h2 id="hero-title">A social calendar made for real life.</h2>
         <p>
           Lucente Calendar helps you manage events, add friends, plan with family,
           and stay organised with reminders in a modern shared calendar app.
         </p>
 
+        <p class="project-byline">
+          A <a href="https://lucente-corporate-portfolio.vercel.app/">Lucente Corporate</a> project founded by
+          <a href="https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/">Sahaan Kesavan</a> and
+          <a href="https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/">Farris Zaman</a>.
+        </p>
+
+        <div class="status-pill" aria-label="Project status: live">
+          <span class="status-dot live" aria-hidden="true"></span>
+          <span>Live</span>
+        </div>
+
         <div class="hero-buttons">
           <a href="auth.html?mode=signup" class="primary-btn page-link">Get Started</a>
           <a href="#features" class="secondary-btn">Explore Features</a>
+          <a href="about/" class="secondary-btn">About</a>
         </div>
       </div>
 
@@ -65,13 +86,122 @@
       </div>
     </section>
 
-    <section id="features" class="features">
+    <section class="info-grid" aria-labelledby="about-project">
+      <article class="info-card">
+        <h2 id="about-project">About Lucente Calendar</h2>
+        <p>
+          Lucente Calendar is a live shared digital calendar application designed to help users organise events,
+          reminders, schedules and collaborative plans in one place.
+        </p>
+        <p>
+          The project is a live application from <a href="https://lucente-corporate-portfolio.vercel.app/">Lucente Corporate</a>,
+          founded by <a href="https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/">Sahaan Kesavan</a>
+          and <a href="https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/">Farris Zaman</a>.
+        </p>
+        <p>
+          Status: <span class="status-pill compact" aria-label="Project status: live"><span class="status-dot live" aria-hidden="true"></span><span>Live</span></span>
+        </p>
+        <p>
+          Learn more about the broader Lucente Corporate work at <a href="https://lucente-corporate-portfolio.vercel.app/">lucente-corporate-portfolio.vercel.app</a>.
+        </p>
+      </article>
+
+      <article class="info-card founders-card" aria-labelledby="founders-heading">
+        <h2 id="founders-heading">Who is behind Lucente Calendar?</h2>
+        <div class="founder-cards">
+          <div class="founder-card">
+            <h3>Sahaan Kesavan</h3>
+            <p class="founder-role">Co-Founder &amp; Product Development Lead</p>
+            <p>Sahaan Kesavan leads product development, application building, technical delivery and feature planning for Lucente Corporate projects.</p>
+            <a href="https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/" class="founder-link">View Sahaan’s Profile ↗</a>
+          </div>
+
+          <div class="founder-card">
+            <h3>Farris Zaman</h3>
+            <p class="founder-role">Co-Founder &amp; Strategy and Marketing Lead</p>
+            <p>Farris Zaman leads strategic planning, marketing, brand positioning and creative direction for Lucente Corporate projects.</p>
+            <a href="https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/" class="founder-link">View Farris’s Profile ↗</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section id="features" class="features" aria-labelledby="features-title">
+      <h2 id="features-title" class="section-title">Highlights</h2>
       <div class="feature-card">📅 Shared Events</div>
       <div class="feature-card">👥 Add Friends</div>
       <div class="feature-card">🔔 Smart Reminders</div>
       <div class="feature-card">💬 Social Planning</div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <p>
+      <strong>Lucente Calendar</strong> is a project by <a href="https://lucente-corporate-portfolio.vercel.app/">Lucente Corporate</a>,
+      founded by <a href="https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/">Sahaan Kesavan</a> and
+      <a href="https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/">Farris Zaman</a>.
+    </p>
+    <p class="status-pill compact" aria-label="Project status: live">
+      <span class="status-dot live" aria-hidden="true"></span>
+      <span>Live</span>
+    </p>
+  </footer>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://lucente-calendar.vercel.app/#webapplication",
+          "name": "Lucente Calendar",
+          "url": "https://lucente-calendar.vercel.app/",
+          "description": "Lucente Calendar is a shared calendar application from Lucente Corporate, founded by Sahaan Kesavan and Farris Zaman, for events, reminders and collaborative planning.",
+          "creator": {
+            "@id": "https://lucente-corporate-portfolio.vercel.app/#organization"
+          },
+          "publisher": {
+            "@id": "https://lucente-corporate-portfolio.vercel.app/#organization"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://lucente-corporate-portfolio.vercel.app/#organization",
+          "name": "Lucente Corporate",
+          "url": "https://lucente-corporate-portfolio.vercel.app/",
+          "foundingDate": "2025",
+          "founder": [
+            {
+              "@id": "https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/#person"
+            },
+            {
+              "@id": "https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/#person"
+            }
+          ]
+        },
+        {
+          "@type": "Person",
+          "@id": "https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/#person",
+          "name": "Sahaan Kesavan",
+          "url": "https://lucente-corporate-portfolio.vercel.app/founders/sahaan-kesavan/",
+          "jobTitle": "Co-Founder & Product Development Lead",
+          "worksFor": {
+            "@id": "https://lucente-corporate-portfolio.vercel.app/#organization"
+          }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/#person",
+          "name": "Farris Zaman",
+          "url": "https://lucente-corporate-portfolio.vercel.app/founders/farris-zaman/",
+          "jobTitle": "Co-Founder & Strategy and Marketing Lead",
+          "worksFor": {
+            "@id": "https://lucente-corporate-portfolio.vercel.app/#organization"
+          }
+        }
+      ]
+    }
+  </script>
 
   <script>
     document.querySelectorAll(".page-link").forEach(link => {

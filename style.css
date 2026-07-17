@@ -27,6 +27,17 @@ a {
   text-decoration: none;
 }
 
+a:hover,
+a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 3px solid #7c3aed;
+  outline-offset: 3px;
+}
+
 .fade-in {
   animation: fadeIn 0.45s ease both;
 }
@@ -243,6 +254,110 @@ a {
 
 .feature-card:hover {
   transform: translateY(-6px);
+}
+
+.project-byline,
+.info-card p,
+.founder-card p,
+.site-footer p {
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.project-byline {
+  margin: 20px 0 16px;
+  font-weight: 600;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.78);
+  color: #111827;
+  font-weight: 800;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+.status-pill.compact {
+  padding: 6px 10px;
+  margin-bottom: 0;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.live {
+  background: #16a34a;
+}
+
+.info-grid {
+  max-width: 1180px;
+  margin: 0 auto 40px;
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.info-card {
+  background: rgba(255,255,255,0.84);
+  padding: 28px;
+  border-radius: 28px;
+  box-shadow: 0 20px 45px rgba(0,0,0,0.08);
+}
+
+.info-card h2 {
+  margin-bottom: 14px;
+  font-size: 28px;
+}
+
+.founder-cards {
+  display: grid;
+  gap: 16px;
+}
+
+.founder-card {
+  background: rgba(248,247,255,0.9);
+  border: 1px solid rgba(124,58,237,0.15);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.founder-role {
+  font-weight: 800;
+  color: #7c3aed;
+  margin: 6px 0 10px;
+}
+
+.founder-link {
+  display: inline-block;
+  color: #111827;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.section-title {
+  grid-column: 1 / -1;
+  margin-bottom: 6px;
+  font-size: 28px;
+}
+
+.site-footer {
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: 20px 28px;
+  border-top: 1px solid rgba(17,24,39,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
 }
 
 .auth-page {
@@ -591,7 +706,8 @@ input:focus {
 
 @media (max-width: 900px) {
   .hero,
-  .dash-grid {
+  .dash-grid,
+  .info-grid {
     grid-template-columns: 1fr;
   }
 
@@ -636,6 +752,11 @@ input:focus {
     flex-direction: column;
     gap: 16px;
     text-align: center;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .event-card {
